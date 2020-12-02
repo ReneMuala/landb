@@ -7,7 +7,7 @@ Landb is a simple C++ library to manage _offline variables_  in landb file struc
 - long and long []
 - long long and long long []
 - string and string []
-- arrary and array []
+- array and array []
 
 ## example
 
@@ -15,13 +15,13 @@ Landb is a simple C++ library to manage _offline variables_  in landb file struc
 
 / class /
 
-#suffs {
+#stuffs {
   
   /int • long • long long value, ';' is necessary/
   
   #year : 2020;
   
-  /float value, ';' is necessary/
+  /float • double value, ';' is necessary/
   
   #pi : 3.14;
   
