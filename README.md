@@ -1,5 +1,5 @@
 # landb
-Landb is a simple C++ library to manage _offline variables_  in landb file structure, it can store data in the following types:
+Landb is a simple C++ library to manage _offline variables_  in landb file structure, it supports data in the following types:
 - int and int []
 - char and char []
 - float and float []
