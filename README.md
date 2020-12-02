@@ -38,11 +38,13 @@ Landb is a simple C++ library to manage _offline variables_  in landb file struc
 -- main.cpp -- 
 
 main(){
+
   lan::db database;
   
   database.connect("example.ldb");
   
   std::cout << database.get_string("languages[0]");
+  
   // "C++"
   
 }
