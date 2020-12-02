@@ -1,0 +1,3 @@
+[submodule "lanconv"]
+	path = lanconv
+	url = https://github.com/Rene-Muala/lanconv.git
