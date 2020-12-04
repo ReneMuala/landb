@@ -21,6 +21,10 @@ bool db::connect(const std::string_view file_name){
     return this -> file != nullptr;
 }
 
+bool db::is_connected(){
+    return file != nullptr;
+}
+
 bool db::disconnect(){
     if(file){
         fclose(file);
@@ -299,7 +303,7 @@ std::string_view db::get_class(const std::string_view class_name){
 
 std::string_view db::get_var(const std::string_view var_name){
     size_t spoint, epoint, beg, end;
-    std::string_view var_short_name = follow_name((std::string)var_name, 0, string().length(), spoint, epoint);
+    std::string var_short_name = (std::string)follow_name((std::string)var_name, 0, string().length(), spoint, epoint);
     if(get_var_scope(string(), var_short_name, spoint, epoint, beg, end)){
         return string().substr(beg, end - beg);
     } return db_consts::undefined;

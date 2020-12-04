@@ -35,6 +35,8 @@ namespace lan {
         
         bool connect(std::string_view const);
         
+        bool is_connected();
+        
         bool disconnect();
         
         bool clear_data();
