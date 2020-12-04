@@ -15,8 +15,9 @@ db::db(){
     free();
 }
 
-bool db::connect(const std::string_view file){
-    this -> file = fopen(file.data(), "rw");
+bool db::connect(const std::string_view file_name){
+    file = fopen(file_name.data(), "r+");
+    file = (!file) ? fopen(file_name.data(), "w+") : file;
     return this -> file != nullptr;
 }
 
@@ -494,16 +495,17 @@ bool db::rm_var(const std::string_view var_name){
 /* -- */
 
 size_t db::push(){
-    fwrite(&data, sizeof(char), data.length(), file);
+    ::fseek(file, 0, SEEK_SET);
+    fwrite(data.data(), sizeof(char), data.length(), file);
     return data.length();
 }
 
 size_t db::pull(){
     char let = 0;
+    ::fseek(file, 0, SEEK_SET);
     while (!feof(file)) {
-        fread(&let, sizeof(char), 1, file);
-        data += let;
-    } return data.length();
+        data+=let; fread(&let, sizeof(char), 1, file);
+    }return data.length();
 }
 
 void db::free(){
