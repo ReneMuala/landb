@@ -34,10 +34,10 @@ bool db::disconnect(){
 
 bool db::clear_data(){
     data.clear();
-    return data.length();
+    return data.length() == 0;
 }
 
-std::string_view db::string(size_t spoint, size_t epoint){
+std::string_view db::string(){
     return data;
 }
 
@@ -348,8 +348,8 @@ long long db::get_long_long(const std::string_view var_name){
     return lan::to_long_long((is_array(var_name) ? get_array(var_name) : get_var(var_name)));
 }
 
-std::string_view db::operator[](std::string_view address){
-    return get_var(address);
+std::string_view db::operator[](std::string_view var_name){
+    return (is_array(var_name) ? get_array(var_name) : get_var(var_name));
 }
 
 /* set */

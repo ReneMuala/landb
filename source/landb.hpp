@@ -9,9 +9,6 @@
 #ifndef landb_hpp
 #define landb_hpp
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <iostream>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -41,7 +38,7 @@ namespace lan {
         
         bool clear_data();
         
-        std::string_view string(size_t = 0 , size_t = 0);
+        std::string_view string();
 
         ssize_t get_comment_scope(std::string_view, size_t const, size_t const);
         
