@@ -1,7 +1,18 @@
 # Landb 🗃
-Landb is a C++ library to read and save variables in an <i>easy to understand</i> file structure. This version of landia::database is 10 times faster than the old one!  
+Landb is a C++ library to read and save variables in an <i>easy to understand</i> file structure.
 
-## Landb types 📑
+## Features 🪧
+<b> Speed </b>🤖
+>  This version of landia::database is 10 times faster than the old one!
+
+<b> Integrity </b> 🛡 
+>  With landb your data wont get corrupted
+
+<b> Weakly typed </b> ✏
+>  Allows variable casting.
+
+
+## Types 📑
 > <b>Bool</b> - <i> Boolean </i>
 
 > <b>Int</b> - <i> Integer </i>
@@ -23,3 +34,25 @@ Landb is a C++ library to read and save variables in an <i>easy to understand</i
 > <b>Array</b> - <i>  Variable sequence </i>
 
 > <b>Container</b> - <i> (Similar to <b>namesmace in c++</b>) Allows object oriented variables </i>
+
+## Stucture examples 📋
+
+A string containing "hello world".
+
+> message = s : "Hello world"
+
+An numbers array
+
+> numbers = a : [  i : 1  s : "one"  i : 2  s : "two" ]
+
+## Compiling 🔨
+
+<b> Clone this repo </b>
+> git clone https://github.com/ReneMuala/landb.git
+
+<b> Build with cmake </b> <i> (inside of the project dir)</i>
+> cmake --build ./
+
+## Linking ⛓
+
+The file <b>liblandb.a</b> can be used to link statically with landb.
