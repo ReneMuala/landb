@@ -1,5 +1,5 @@
 # Landb 🗃
-Landb is a C++ library read and save variables in an easy to understand file structure. This version of landia::database is 10 times faster than the old one!  
+Landb is a C++ library to read and save variables in an <i>easy to understand</i> file structure. This version of landia::database is 10 times faster than the old one!  
 
 ## Landb types 📑
 > <b>Bool</b> - <i> Boolean </i>
