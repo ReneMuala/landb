@@ -1,10 +1,14 @@
-//
-//  main.cpp
-//  landb
-//
-//  Created by René Descartes Domingos Muala on 10/10/20.
-//  Copyright © 2020 landia (René Muala). All rights reserved.
-//
+/*
+ * version = d : 2.0
+ * file = s : "main.cpp"
+ * project = s : "landb"
+ *
+ * (credits:
+ *          message = s : "Created by René Descartes Domingos Muala on 10/10/20."
+ *          Copyright = s : "© 2021 landia (René Muala). All rights reserved."
+ *          Contact = s : "renemuala@icloud.com"
+ * )
+ */
 
 #include <iostream>
 #include <string>
@@ -32,22 +36,41 @@ int main (int argc, const char * argv []) {
     students.set_anchor("Carlos", 0);
     
     students.set<std::string>("@", "Full_name", "Carlos Eduard" ,lan::String, true);
-    students.set<long long>("@", "Average", 13 ,lan::LongLong, true);
+    students.set<double>("@", "Average", 13 ,lan::Double, true);
     students.set<bool>("@", "Passed", true ,lan::Bool, true);
     
     students.set_anchor("Anna", 0);
     
     students.set<std::string>("@", "Full_name", "Anna Cristin" ,lan::String, true);
-    students.set<long long>("@", "Average", 16 ,lan::LongLong, true);
+    students.set<double>("@", "Average", 16 ,lan::Double, true);
     students.set<bool>("@", "Passed", true ,lan::Bool, true);
     
     students.set_anchor("Antony", 0);
     
     students.set<std::string>("@", "Full_name", "Antony Jeff" ,lan::String, true);
-    students.set<long long>("@", "Average", 9 ,lan::LongLong, true);
+    students.set<double>("@", "Average", 9 ,lan::Double, true);
     students.set<bool>("@", "Passed", false ,lan::Bool, true);
     
     students.connect("generated_example.ldb");
+    
+    // students.print();
+    
+    std::cout << "Landia::db version: " << lan::db_version << "; Hello world!\n";
+    
+    std::string current_student;
+    
+    for( auto i : { 0, 1, 2}){
+                current_student = students.get<std::string>("List", i, lan::String);
+                students.set_anchor(current_student, 0);
+                std::cout << "info: Printing description for student <" << current_student << ">"
+                << std::endl
+                << i + 1 <<".\tName: " << students.get<std::string>("@", "Full_name", lan::String) 
+                << std::endl
+                << "\tAverage : " <<  students.get<double>("@", "Average", lan::Double)
+                << std::endl
+                << "\tPassed : " <<  ((students.get<bool>("@", "Passed", lan::Bool) ? "Yes" : "No"))
+                << std::endl;
+        }
     
     students.push();
     

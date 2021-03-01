@@ -1,10 +1,14 @@
-//
-//  landb.hpp
-//  landb
-//
-//  Created by René Descartes Domingos Muala on 10/10/20.
-//  Copyright © 2021 landia (René Muala). All rights reserved.
-//
+/*
+ * version = d : 2.0
+ * file = s : "main.cpp"
+ * project = s : "landb"
+ *
+ * (credits:
+ *          message = s : "Created by René Descartes Domingos Muala on 10/10/20."
+ *          Copyright = s : "© 2021 landia (René Muala). All rights reserved."
+ *          Contact = s : "renemuala@icloud.com"
+ * )
+ */
 
 #pragma once
 
@@ -16,6 +20,8 @@
 
 namespace lan
 {
+    
+    const std::string db_version = "2.0 (Public Beta)";
     
     namespace errors {
         //! @brief catch parameter to handle errors with bit names
