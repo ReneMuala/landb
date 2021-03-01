@@ -15,15 +15,6 @@
 int main (int argc, const char * argv []) {
     
     lan::db students;
-
-    students.connect("generated_example.ldb");
-    //students.push();
-    students.pull();
-    //std::cout << students.get<std::string>("WeirdArray", 2, lan::String) << std::endl;
-   
-    students.push();
-    
-    return 0;
     
     students.declare("List", lan::Array);
     students.declare("Carlos", lan::Array);
@@ -46,7 +37,7 @@ int main (int argc, const char * argv []) {
     
     students.set_anchor("Anna", 0);
     
-    students.set<std::string>("@", "Full_name", "Anna\" Cristin" ,lan::String, true);
+    students.set<std::string>("@", "Full_name", "Anna Cristin" ,lan::String, true);
     students.set<long long>("@", "Average", 16 ,lan::LongLong, true);
     students.set<bool>("@", "Passed", true ,lan::Bool, true);
     
@@ -56,6 +47,8 @@ int main (int argc, const char * argv []) {
     students.set<long long>("@", "Average", 9 ,lan::LongLong, true);
     students.set<bool>("@", "Passed", false ,lan::Bool, true);
     
-    students.set<std::string>("Antony", 0,"uy", lan::String);
+    students.connect("generated_example.ldb");
+    
+    students.push();
     
 }
