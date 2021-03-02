@@ -52,7 +52,7 @@ int main (int argc, const char * argv []) {
     students.set<bool>("@", "Passed", false ,lan::Bool, true);
     
     students.connect("generated_example.ldb");
-    
+        
     // students.print();
     
     std::cout << "Landia::db version: " << lan::db_version << "; Hello world!\n";

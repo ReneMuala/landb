@@ -313,7 +313,7 @@ namespace lan
             if(type >= lan::Array) return false;
             if((data = find_any(name, type, first))){
                 if(not overwrite) return false;
-                return set_bit(data, name, type, value);
+                return set_bit(nullptr,data, name, type, value);
             } return (not first) ? init(name, value, type) : append(name, value, type);
         }
         
