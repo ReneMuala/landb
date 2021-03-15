@@ -14,6 +14,73 @@
 
 namespace lan 
 {
+    
+    /* lan::safe_file */
+    
+    safe_file::safe_file(){
+        file = nullptr;
+        filename = "";
+    }
+    
+    bool safe_file::open(std::string filename){
+        close_fd();
+        return (this->filename = filename).length() and check();
+    }
+    
+    bool safe_file::check(){
+        close_fd();
+        file = fopen(filename.data(), "r+");
+        file = (!file) ? fopen(filename.data(), "w+") : file;
+        return (file);
+    }
+    
+    bool safe_file::push(std::string data){
+        close_fd();
+        if((file = fopen(filename.data(), "w"))){
+            return fwrite(data.data(), sizeof(char), data.length(), file);
+        } return false;
+    }
+    
+    std::string safe_file::pull(){
+        close_fd();
+        std::string data = ("");
+        if((file = fopen(filename.data(), "r"))){
+            char data_c = 0;
+            while(!feof(file)){
+                if(data_c != 0) data+=data_c; fread(&data_c, sizeof(char), 1, file); 
+            }
+        } return data;
+    }
+    
+    size_t safe_file::length(){
+        close_fd();
+        size_t length = 0;
+        if((file = fopen(filename.data(), "r"))){
+            char data_c = 0;
+            while(!feof(file)){
+                fread(&data_c, sizeof(char), 1, file); length++;
+            }
+        } return length;
+    }
+    
+    bool safe_file::close(){
+        filename = "";
+        close_fd();
+        return !(filename).length();
+    }
+    
+    bool safe_file::close_fd() {
+        if(file) fclose(file);
+        file = nullptr;
+        return (file == nullptr);
+    }
+    
+    safe_file::~safe_file(){
+        close_fd();
+    }
+    
+    /* lan::db */
+    
     char db_bit_table [11] = {  'b' ,   'i' ,
         'l' ,   'x' ,
         'f' ,   'd' ,
@@ -84,7 +151,7 @@ namespace lan
         }
         
         /* file */
-
+        
         bool db::connect(std::string filename){
             return file.open(filename);
         }
@@ -131,7 +198,7 @@ namespace lan
             for(register_t i = 0 ; i < content.length() ; i++)
                 if(content.data()[i] == target)
                     return true;
-            return false;
+                return false;
         }
         
         std::string db::pop_next(std::string & content){
@@ -201,7 +268,7 @@ namespace lan
             for(uint i = Bool ; i <= Container ; i++ )
                 if(type == db_bit_table[i])
                     return (db_bit_type)i;
-            return Unsafe;
+                return Unsafe;
         }
         
         void * db::get_var_data(db_bit_type type, std::string data){
@@ -311,7 +378,7 @@ namespace lan
         std::string db::prepare_char_to_write(char src){
             std::string dst, temp ;
             if(src == '\"' or src == '\\') dst += "\\";
-                dst += src;
+            dst += src;
             return dst;
         }
         
@@ -440,7 +507,9 @@ namespace lan
         /* db general */
         
         bool db::declare(std::string const name, db_bit_type const type){
-            return (last) ? append(name, 0, type) : init(name, 0, type);
+            if(!find_any(name, type, first))
+                return (last) ? append(name, 0, type) : init(name, 0, type);
+            return false;
         }
         
         bool db::declare(std::string const target, std::string const name, db_bit_type const type){
@@ -501,14 +570,13 @@ namespace lan
             if ((data = find_rec(target, lan::Container, lan::Array, first)) and
                 (data = get_array_bit(data, index))) {
                 erase_bit(data);
-                    return true;
-            } return false;
+                return true;
+                } return false;
         }
         
         db::~db(){
             if(last)
                 erase();
-            reset_data();
         }
         
 } 

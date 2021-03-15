@@ -16,12 +16,34 @@
 #include <string>
 #include <string_view>
 #include <vector>
-#include "lanfile/file.hpp"
 
 namespace lan
 {
+    /* lan::safe_file */
+    class safe_file {
+        FILE * file;
+        std::string filename;
+
+    public:
+        
+        safe_file();
+        
+        bool open(std::string);
+        bool check();
+        bool push(std::string);
+        std::string pull();
+        size_t length();
+        bool close();
+        bool close_fd();
+
+        ~safe_file();
+    };
     
-    const std::string db_version = "2.0 (Public Beta)";
+    const std::string safe_file_version = "1.0 (stable)";
+    
+    /* lan::db */
+    
+    const std::string db_version = "2.1 (stable)";
     
     namespace errors {
         //! @brief catch parameter to handle errors with bit names
@@ -183,7 +205,6 @@ namespace lan
         
         template<typename any>
         bool init(std::string const name, any const value, db_bit_type const type){
-            reset_data();
             data = new db_bit;
             return (first = last = data) and ((type < lan::Array) ? set_bit(nullptr, data, name, type, value) : set_bit(nullptr ,data, name, type));
         }

@@ -4,7 +4,7 @@ project(landb)
 
 add_compile_options(-std=c++17)
 
-add_library(landb STATIC  landb.cpp lanfile/file.cpp)
+add_library(landb STATIC  landb.cpp)
 
 add_executable(example main.cpp)
 
