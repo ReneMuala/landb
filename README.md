@@ -53,7 +53,7 @@ An array with numbers and strings:
 
 <b> Build with cmake </b> <i> (inside of the project dir)</i>
 
-> cmake
+> cmake ./
 
 > cmake --build ./
 
