@@ -65,11 +65,7 @@ The file <b>liblandb.a</b> can be used to link statically with landb.
 
 > g++ main.cpp liblandb.a
 
-<<<<<<< HEAD
-<b>Attention: </b>Make sure to copy <b>liblandb.a</b> and <b>landb.hpp</b> to your project source directory.
-=======
 <b>Attention: </b>Make sure to copy <b>liblandb.a</b> and <b>landb.hpp</b> to your project's source directory.
->>>>>>> 2ebdf2f2bb0f0433eb3b9cd2169396b009287619
 
 <b> CMakeLists.txt example: </b>
 
