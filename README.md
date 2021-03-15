@@ -1,16 +1,17 @@
 # Landb 🗃
 Landb is a C++ library to read and save variables in an <i>easy to understand</i> file structure.
 
+## What's new in version 2.1?
+> improved security
+> 
+> various bug fixes
+
 ## Features 🪧
 <b> Speed </b>🤖
->  This version of landia::database is 10 times faster than the old one!
 
 <b> Integrity </b> 🛡 
->  With landb your data wont get corrupted
 
 <b> Weakly typed </b> ✏
->  Allows variable casting.
-
 
 ## Types 📑
 > <b>Bool</b> - <i> Boolean </i>
@@ -41,7 +42,7 @@ A string containing "hello world".
 
 > message = s : "Hello world"
 
-An numbers array
+An array with numbers and strings:
 
 > numbers = a : [  i : 1  s : "one"  i : 2  s : "two" ]
 
@@ -51,8 +52,31 @@ An numbers array
 > git clone https://github.com/ReneMuala/landb.git
 
 <b> Build with cmake </b> <i> (inside of the project dir)</i>
+
+> cmake ./
+
 > cmake --build ./
 
-## Linking ⛓
+## Linking with your project⛓
 
 The file <b>liblandb.a</b> can be used to link statically with landb.
+
+<b>example:</b>
+
+> g++ main.cpp liblandb.a
+
+<b>Attention: </b>Make sure to copy <b>liblandb.a</b> and <b>landb.hpp</b> to your project source directory.
+
+<b> CMakeLists.txt example: </b>
+
+> cmake_minimum_required(VERSION 3.0)
+>
+> project(sgep)
+>
+> add_compile_options(-std=c++17)
+> 
+> add_executable(sgep main.cpp)
+>
+> target_link_libraries(sgep ${CMAKE_SOURCE_DIR}/liblandb.a) # linking with liblandb.a in project source dir
+>
+> install(TARGETS sgep RUNTIME DESTINATION bin)
