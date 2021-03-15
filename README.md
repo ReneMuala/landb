@@ -42,7 +42,7 @@ A string containing "hello world".
 
 > message = s : "Hello world"
 
-An numbers array
+An array with numbers and strings:
 
 > numbers = a : [  i : 1  s : "one"  i : 2  s : "two" ]
 
