@@ -34,7 +34,7 @@ Landb is a C++ library to read and save variables in an <i>easy to understand</i
 
 > <b>Array</b> - <i>  Variable sequence </i>
 
-> <b>Container</b> - <i> (Similar to <b>namesmace in c++</b>) Allows object oriented variables </i>
+> <b>Container</b> - <i> (Similar to <b>namespace in c++</b>) Allows object oriented variables </i>
 
 ## Stucture examples 📋
 
