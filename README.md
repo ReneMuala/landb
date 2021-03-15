@@ -54,6 +54,26 @@ An numbers array
 <b> Build with cmake </b> <i> (inside of the project dir)</i>
 > cmake --build ./
 
-## Linking ⛓
+## Linking with your project⛓
 
-The file <b>liblandb.a</b> can be used to link statically with landb.
+The file <b>liblandb.a</b> in <i>Build</i> can be used to link statically with landb.
+
+<b>example:</b>
+
+> g++ main.cpp liblandb.a
+
+<b>Attention: </b>Make sure to copy <b>liblandb.a</b> and <b>landb.hpp</b> to your project source directory.
+
+<b> CMakeLists.txt example: </b>
+
+> cmake_minimum_required(VERSION 3.0)
+>
+> project(sgep)
+>
+> add_compile_options(-std=c++17)
+> 
+> add_executable(sgep main.cpp)
+>
+> target_link_libraries(sgep ${CMAKE_SOURCE_DIR}/liblandb.a) # linking with liblandb.a in project source dir
+>
+> install(TARGETS sgep RUNTIME DESTINATION bin)
