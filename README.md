@@ -52,11 +52,14 @@ An array with numbers and strings:
 > git clone https://github.com/ReneMuala/landb.git
 
 <b> Build with cmake </b> <i> (inside of the project dir)</i>
+
+> cmake
+
 > cmake --build ./
 
 ## Linking with your project⛓
 
-The file <b>liblandb.a</b> in <i>Build</i> can be used to link statically with landb.
+The file <b>liblandb.a</b> can be used to link statically with landb.
 
 <b>example:</b>
 
