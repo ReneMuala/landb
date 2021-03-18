@@ -1,7 +1,6 @@
-/*
- * version = d : 2.0
- * file = s : "main.cpp"
+/*!
  * project = s : "landb"
+ *
  *
  * (credits:
  *          message = s : "Created by René Descartes Domingos Muala on 10/10/20."
@@ -247,7 +246,7 @@ namespace lan
             if(pop_next(content) == ":") {
                 bit->lin = get_container_data(content);
             } else {
-                throw std::logic_error("LANDB: unable read container <" + bit->key + ">, the param <:> was not found.");   
+                throw lan::errors::pull_error ("LANDB (pull_error): unable read container <" + bit->key + ">, the param <:> was not found.");
             } return bit;
         }
         
@@ -257,7 +256,7 @@ namespace lan
             bit->type = Array;
             bit->data = nullptr;
             if(pop_next(content) != "[")
-                throw std::logic_error("LANDB: landb: expected <[> before <" + pop_next(content) + "> ... " + pop_next(content));
+                throw lan::errors::pull_error ("LANDB (pull_error): landb: expected <[> before <" + pop_next(content) + "> ... " + pop_next(content));
             else
                 bit->lin = get_array_data(content);
             return bit;
@@ -311,7 +310,7 @@ namespace lan
             db_bit_type type = Unsafe;
             lan::db_bit * bit = nullptr;
             if(!in_array and !((name = pop_next(content)).length() and (pop_next(content) == "="))){
-                throw std::logic_error("LANDB: unable read value bit <" + bit->key + ">, invalid sintax.");   
+                throw lan::errors::pull_error ("LANDB (pull_error): unable read value bit <" + bit->key + ">, invalid sintax.");
             } if( (c_type = pop_next(content)[0]) and (pop_next(content) == ":")){
                 type = convert_to_bit_type(c_type);
                 switch(type){
@@ -439,7 +438,9 @@ namespace lan
                 case errors::_private::_bit_name_error:
                     return ("LANDB (bit_name_error): Unable to find bit \""+name+"\"."); break;
                 case errors::_private::_anchor_name_error:
-                    return ("LANDB (anchor_name_error): Invalid anchor address \""+name+"\"."); break;
+                    return ("LANDB (anchor_name_error): Invalid anchor \""+name+"\"."); break;
+                case errors::_private::_overriding_bit_error:
+                    return ("LANDB (overriding_bit_error): Overriding bit \""+name+"\", catch to continue."); break;
                 default: return (name); break;
             }
         }
@@ -507,14 +508,21 @@ namespace lan
         /* db general */
         
         bool db::declare(std::string const name, db_bit_type const type){
-            if(!find_any(name, type, first))
+            if(!(data = find_any(name, type, first)))
                 return (last) ? append(name, 0, type) : init(name, 0, type);
-            return false;
+            else {
+                std::string str = data->key;
+                str += ("{");
+                str += db_bit_table[data->type];
+                str += ("}");
+                throw lan::errors::overriding_bit_error(error_string(errors::_private::_overriding_bit_error, str));
+                return set_bit(first, data, name, type);
+            } return false;
         }
         
         bool db::declare(std::string const target, std::string const name, db_bit_type const type){
-            return ((data = find_rec(target, lan::Container, first)) and data->lin)
-            ? append(data, name, 0, type) : init(data, name, 0, type);
+            return ((data = find_rec(target, lan::Container, first)))
+            ? (data->lin) ? append(data, name, 0, type) : init(data, name, 0, type): throw lan::errors::bit_name_error(error_string(errors::_private::_bit_name_error, target+("{Container}")));
         }
         
         /* get */
@@ -539,7 +547,7 @@ namespace lan
             if((data = find_var(name, first)))
                 return data->type;
             else
-                throw std::invalid_argument(error_string(errors::_private::_bit_name_error, name));
+                throw lan::errors::bit_name_error(error_string(errors::_private::_bit_name_error, name));
         }
         
         void * db::operator[](std::string const name){
@@ -550,24 +558,24 @@ namespace lan
         
         /* remove */
         
-        bool db::remove(const std::string target, const db_bit_type type){
-            if ((data = find_rec(target, type, first))) {
+        bool db::remove(const std::string name, const db_bit_type type){
+            if ((data = find_rec(name, type, first))) {
                 erase_bit(data);
                 return true;
             } return false;
         }
         
-        bool db::remove(const std::string address, const std::string target, const db_bit_type type){
-            if ((data = find_rec(address, lan::Container, first))) {
-                if ((data = find_rec(target, type, data->lin))) {
+        bool db::remove(const std::string context, const std::string name, const db_bit_type type){
+            if ((data = find_rec(context, lan::Container, first))) {
+                if ((data = find_rec(name, type, data->lin))) {
                     erase_bit(data);
                     return true;
                 }
             } return false;
         }
         
-        bool db::remove(const std::string target, size_t index){
-            if ((data = find_rec(target, lan::Container, lan::Array, first)) and
+        bool db::remove(const std::string array, size_t index){
+            if ((data = find_rec(array, lan::Container, lan::Array, first)) and
                 (data = get_array_bit(data, index))) {
                 erase_bit(data);
                 return true;
@@ -578,5 +586,4 @@ namespace lan
             if(last)
                 erase();
         }
-        
 } 
