@@ -49,7 +49,7 @@ namespace lan
     
     /* lan::db */
     
-    const std::string db_version = "2.2 (stable)";
+    const std::string db_version = "2.3 (stable)";
     
     namespace errors {
         //! @brief catch parameter to handle errors with bit names
@@ -57,7 +57,6 @@ namespace lan
         typedef std::out_of_range anchor_name_error;
         typedef std::logic_error pull_error;
         typedef std::runtime_error overriding_bit_error;
-
         
         namespace _private {
             enum error_type {_bit_name_error, _anchor_name_error, _overriding_bit_error};
@@ -303,7 +302,7 @@ namespace lan
         template<typename any>
         bool append(lan::db_bit * context, std::string const name, any const value, db_bit_type const type){
             data = context;
-            if(data-> type == lan::Array and (data = data->lin)){
+            if(data-> type == lan::Container and (data = data->lin)){
                 data = get_last_bit(data);
                 data->nex = new db_bit; data->nex->pre = data; data = data->nex;
                 return ((type < lan::Array) ? set_bit(context, data, name, type, value) : set_bit(context, data, name, type));
