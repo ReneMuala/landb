@@ -6,6 +6,8 @@ add_compile_options(-std=c++17)
 
 add_library(landb STATIC  landb.cpp)
 
+add_library(landbD SHARED  landb.cpp)
+
 add_executable(example main.cpp)
 
 target_link_libraries(example landb)
