@@ -49,7 +49,7 @@ namespace lan
     
     /* lan::db */
     
-    const std::string db_version = "2.3 (stable)";
+    const std::string db_version = "2.4 (public)";
     
     namespace errors {
         //! @brief catch parameter to handle errors with bit names
@@ -237,10 +237,9 @@ namespace lan
          */
         template<typename any>
         bool set_bit(db_bit * context, db_bit * var,std::string const name, db_bit_type const type, any const value){
-            var->~db_bit();
             set_bit(context, var, name, type);
             var->data = new any (value);
-            return  (var->data);
+            return (var->data);
         }
         
         /*! @brief sets a bit.
@@ -510,8 +509,8 @@ namespace lan
             if(type >= lan::Array) return false;
             if((data = find_rec(context, lan::Container, first))){
                 lan::db_bit * buffer = data;
-                if((data = find_any(name, type, data))) {
-                    if(not overwrite) throw lan::errors::overriding_bit_error(error_string(errors::_private::_overriding_bit_error, data->key));
+                if((data = find_any(name, type, data->lin))) {
+                    if(!overwrite) throw lan::errors::overriding_bit_error(error_string(errors::_private::_overriding_bit_error, data->key));
                     return set_bit(buffer, data, name, type, value);
                 } return (buffer->lin) ? append(buffer, name, value, type) : init(buffer, name, value, type);
             } throw lan::errors::bit_name_error(error_string(errors::_private::_bit_name_error, context+"{Container}"));;

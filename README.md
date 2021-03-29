@@ -1,11 +1,7 @@
 # Landb 🗃
 Landb is a C++ library to read and save variables in an <i>easy to understand</i> file structure.
 
-## What's new in version 2.3?
-> added documentation
->
-> improved security
-> 
+## What's new in version 2.4?
 > various bug fixes
 
 ## Features 🪧
