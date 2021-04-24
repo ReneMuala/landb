@@ -97,7 +97,7 @@ cmake ./
 ```
 
 ```
-# 2.3 build with cmake
+# 2.3 build with cmake :
 cmake --build ./
 ```
 
