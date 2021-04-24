@@ -11,7 +11,7 @@
 
 #include "landb.hpp"
 
-namespace lan 
+namespace lan
 {
     
     /* lan::safe_file */
@@ -46,7 +46,7 @@ namespace lan
         if((file = fopen(filename.data(), "r"))){
             char data_c = 0;
             while(!feof(file)){
-                if(data_c != 0) data+=data_c; fread(&data_c, sizeof(char), 1, file); 
+                if(data_c != 0) data+=data_c; fread(&data_c, sizeof(char), 1, file);
             }
         } return data;
     }
@@ -292,7 +292,7 @@ namespace lan
                 if(ch == '\\' and !in_escape) in_escape = true;
                 else in_escape = false;
                 if(!in_escape)dst += ch;
-            } 
+            }
             return dst;
         }
         
@@ -316,7 +316,7 @@ namespace lan
                 switch(type){
                     case Array: bit = read_array_bit(name, content); break;
                     default: bit = read_var_bit(name, type, content); break;
-                } 
+                }
             } return bit;
         }
         
@@ -349,7 +349,7 @@ namespace lan
             if(first)
                 erase_bits(first);
             first = nullptr;
-            std::string data_str = file.pull(); 
+            std::string data_str = file.pull();
             return (first = read_all_bits(data_str));
         }
         
@@ -391,7 +391,7 @@ namespace lan
         
         std::string db::write_var_bit(db_bit * bit, bool in_array){
             if(!bit->data) return "";
-            std::string bit_str = bit->key + ((!in_array) ? '=' : '\0') + db_bit_table [bit->type] + ':';
+            std::string bit_str = bit->key + ((!in_array) ? '=' : ' ') + db_bit_table [bit->type] + ':';
             switch (bit->type) {
                 case Bool:      bit_str += std::to_string(get<bool>(bit));      break;
                 case Int:       bit_str += std::to_string(get<int>(bit));       break;
@@ -439,6 +439,8 @@ namespace lan
                     return ("LANDB (bit_name_error): Unable to find bit \""+name+"\"."); break;
                 case errors::_private::_anchor_name_error:
                     return ("LANDB (anchor_name_error): Invalid anchor \""+name+"\"."); break;
+                case errors::_private::_empty_anchor_error:
+                    return ("LANDB (empty_anchor_error): Using empty anchor, catch to continue."); break;
                 case errors::_private::_overriding_bit_error:
                     return ("LANDB (overriding_bit_error): Overriding bit \""+name+"\", catch to continue."); break;
                 default: return (name); break;
@@ -458,6 +460,7 @@ namespace lan
         lan::db_bit * db::find(const std::string name, lan::db_bit * ref){
             lan::db_bit * buf = ref;
             if(name == "@") return anchor;
+            else if(name == "@") throw lan::errors::anchor_name_error(error_string(errors::_private::_empty_anchor_error, ""));
             while (buf) {
                 if(buf->key == name) return buf;
                 buf = buf->nex;
@@ -489,6 +492,7 @@ namespace lan
         lan::db_bit * db::find_var(const std::string name, lan::db_bit * ref){
             lan::db_bit * buf = nullptr;
             if(name == "@") return anchor;
+            else if(name == "@") throw lan::errors::anchor_name_error(error_string(errors::_private::_empty_anchor_error, ""));
             while ((buf = find(name, ref))) {
                 if(buf->type < lan::Array)
                     return buf;
@@ -498,7 +502,8 @@ namespace lan
         
         lan::db_bit * db::find_any(const std::string name, const lan::db_bit_type type, lan::db_bit * ref){
             lan::db_bit * buf = nullptr;
-            if(name == "@") return anchor;
+            if(name == "@" && anchor) return anchor;
+            else if(name == "@") throw lan::errors::anchor_name_error(error_string(errors::_private::_empty_anchor_error, ""));
             while ((buf = find(name, ref))) {
                 if(buf->type == type) return buf;
                 ref = buf->nex;
@@ -586,4 +591,4 @@ namespace lan
             if(last)
                 erase();
         }
-} 
+}

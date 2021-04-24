@@ -49,17 +49,18 @@ namespace lan
     
     /* lan::db */
     
-    const std::string db_version = "2.4 (public)";
+    const std::string db_version = "2.5 (public)";
     
     namespace errors {
         //! @brief catch parameter to handle errors with bit names
         typedef std::invalid_argument bit_name_error;
         typedef std::out_of_range anchor_name_error;
+        typedef std::out_of_range empty_anchor_error;
         typedef std::logic_error pull_error;
         typedef std::runtime_error overriding_bit_error;
         
         namespace _private {
-            enum error_type {_bit_name_error, _anchor_name_error, _overriding_bit_error};
+            enum error_type {_bit_name_error, _anchor_name_error, _empty_anchor_error, _overriding_bit_error};
         }
     }
     
@@ -88,7 +89,7 @@ namespace lan
             pre  = nullptr;
             nex  = nullptr;
             lin  = nullptr;
-            con  = nullptr; 
+            con  = nullptr;
         } ~ db_bit (){
             if(data or not key.empty()) { ::free(data) ; db_bit();}
             if(lin) {delete lin; lin = nullptr;}
@@ -492,7 +493,7 @@ namespace lan
                     data->type = type;
                     if(type < lan::Array)
                         data->data = new any (value);
-                } 
+                }
             } throw lan::errors::bit_name_error(error_string(errors::_private::_bit_name_error, array+"{Array}"));
         }
         
@@ -530,7 +531,7 @@ namespace lan
          @param context the context.
          */
         lan::anchor_t * set_anchor(std::string const context){
-            if ((data = find_rec(context, lan::Container, first))) return anchor;
+            if ((data = find_rec(context, lan::Container, first))) return (anchor = data);
             else throw lan::errors::anchor_name_error(error_string(errors::_private::_anchor_name_error, context));
         }
         

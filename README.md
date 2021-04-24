@@ -1,80 +1,123 @@
 # Landb 🗃
-Landb is a C++ library to read and save variables in an <i>easy to understand</i> file structure.
+C++ library to save & load variables easily.
+ 
+## Why Landb? 🪧
+- It saves time: <i>with landb you don't have to worry about writing and loading your program metadata, just `database.connect("filename.ldb")` then `database.pull()` to read and `database.push()` to write your variables.</I>
+- It's fast: <i>it's really fast</i>😄
+- multi-type arrays: <i>Landb Arrays may contain multiple types of data, even another arrays.</i>
+- type-oriented variables: <i> In Landb `number=i:1` and `number=s:"one"` can exist in the same database without conflicts, because they have different types</i> 
+- object-oriented variables: <i> Containers allows us to implement object oriented variables such as:</i>
+```
+(PersonA:
+    Name=s:"Ty"
+    Age=i:9
+)
 
-## What's new in version 2.4?
-> various bug fixes
+(PersonB: 
+    Name=s:"Renato"
+    Age=i:17
+)
+```
 
-## Features 🪧
-<b> Speed </b>🤖
 
-<b> Integrity </b> 🛡 
 
-<b> Weakly typed </b> ✏
+## What's new in version 2.5? 🎁
+> <strong> 533: set_anchor(std::string const context) </strong> <i>fixed🔧</I>
+
+## Examples ⚙️
+
+#### Hello world 🤓
+
+```
+#include <iostream>
+#include "landb.hpp"
+
+int main(int argc, const char * argv[]) {
+    
+    lan::db database;
+    
+    database.set<std::string>("message", "hello world", lan::String);
+    
+    std::cout << database.get<std::string>("message", lan::String) << std::endl;
+    
+    return 0;
+}
+```
 
 ## Types 📑
-> <b>Bool</b> - <i> Boolean </i>
 
-> <b>Int</b> - <i> Integer </i>
+| Type | Description |
+|:--|:--|
+|  Bool | Boolean |
+| Int | Integer |
+| Long |  Big integer |
+| LongLong | Big integer (unsigned) |
+|  Float  | Real number  |
+| Double | Big real number  |
+| Char | Character |
+| String | Character sequence |
+| Unsafe | Unsafe data, only exists at runtime and cannot be pushed |
+| Array | Variable sequence |
+| Container | (Similar to <b>namespace in c++</b>) Allows object oriented variables |
 
-> <b>Long</b> - <i>  Big integer </i>
-
-> <b>LongLong</b> - <i>  Big integer (unsigned) </i>
-
-> <b>FLoat</b> - <i>  Real number </i>
-
-> <b>Double</b> - <i>  Big real number </i>
-
-> <b>Char</b> - <i>  Character </i>
-
-> <b>String</b> - <i>  Character sequence </i>
-
-> <b>Unsafe</b> - <i>  Unsafe data, only exists at runtime and cannot be pushed </i>
-
-> <b>Array</b> - <i>  Variable sequence </i>
-
-> <b>Container</b> - <i> (Similar to <b>namespace in c++</b>) Allows object oriented variables </i>
-
-## Stucture examples 📋
-
+## Landb structure examples 📋
+ 
 A string containing "hello world".
 
-> message = s : "Hello world"
+```
+message = s : "Hello world"
+```
 
 An array with numbers and strings:
 
-> numbers = a : [  i : 1  s : "one"  i : 2  s : "two" ]
+```
+numbers = a : [  i : 1  s : "one"  i : 2  s : "two" ]
+```
 
 ## Compiling 🔨
 
-<b> Clone this repo </b>
-> git clone https://github.com/ReneMuala/landb.git
+<b>1. Clone this repo </b>
 
-<b> Build with cmake </b> <i> (inside of the project dir)</i>
+```
+# 1.1 clone using git:
+git clone https://github.com/ReneMuala/landb.git
+```
 
-> cmake ./
+<b> 2. Build with cmake </b> <i> (inside of the project dir)</i>
 
-> cmake --build ./
+
+```
+# 2.1 getin landb foder :
+cd landb 
+```
+
+```
+# 2.2 configure cmake :
+cmake ./ 
+```
+
+```
+# 2.3 build with cmake
+cmake --build ./
+```
 
 ## Linking with your project⛓
 
-The file <b>liblandb.a</b> can be used to link statically with landb.
+| File | Description | Notes |
+|:--|:--|:--|
+| liblandb.a | Static library | Can be used to link binaries statically with landb |
+| liblandbD.so | Shared library |  Can be used to link binaries dynamically with landb |
 
-<b>example:</b>
-
-> g++ main.cpp liblandb.a
-
-<b>Attention: </b>Make sure to copy <b>liblandb.a</b> and <b>landb.hpp</b> to your project's source directory.
+Note: to include landb as `#include "landb.hpp"` you need to copy <i>landb.hpp</I> to your source's dir.
 
 <b> CMakeLists.txt example: </b>
 
-> cmake_minimum_required(VERSION 3.0)
->
-> project(sgep)
->
-> add_compile_options(-std=c++17)
-> 
-> add_executable(sgep main.cpp)
->
-> target_link_libraries(sgep ${CMAKE_SOURCE_DIR}/liblandb.a) # linking with liblandb.a in project source dir
->
-> install(TARGETS sgep RUNTIME DESTINATION bin)
+```
+cmake_minimum_required(VERSION 3.0)
+project(sgep)
+add_compile_options(-std=c++17)
+add_executable(sgep main.cpp)
+target_link_libraries(sgep ${CMAKE_SOURCE_DIR}/liblandb.a) # linking with liblandb.a in project source dir
+install(TARGETS sgep RUNTIME DESTINATION bin)
+
+```
