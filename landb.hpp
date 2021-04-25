@@ -13,8 +13,6 @@
 
 #include <iostream>
 #include <string>
-#include <string_view>
-#include <vector>
 
 namespace lan
 {
@@ -49,7 +47,7 @@ namespace lan
     
     /* lan::db */
     
-    const std::string db_version = "2.5 (public)";
+    const std::string db_version = "2.6 (public)";
     
     namespace errors {
         //! @brief catch parameter to handle errors with bit names
@@ -75,7 +73,9 @@ namespace lan
      *                                    'c' ,   's' ,
      *                                    'u' ,   'a' ,
      *                                            '#' };
-} */
+     *      }
+     *
+     */
     
     //! @brief database bit: used to criate linked lists that store variables, arrays and containers dynamically
     struct db_bit {
@@ -89,7 +89,7 @@ namespace lan
             pre  = nullptr;
             nex  = nullptr;
             lin  = nullptr;
-            con  = nullptr;
+            con  = nullptr; 
         } ~ db_bit (){
             if(data or not key.empty()) { ::free(data) ; db_bit();}
             if(lin) {delete lin; lin = nullptr;}
@@ -99,6 +99,7 @@ namespace lan
     typedef db_bit db_bits;
     typedef db_bit anchor_t;
     
+    /// @brief Landia Database
     class db {
         
         lan::db_bits * data;
@@ -112,129 +113,129 @@ namespace lan
         
         /* -- */
         
-        /* erases all the bits in the context */
+        /* Erases all bits in the context. */
         void erase_bits(db_bits *);
         
-        /* erases a bit */
+        /* Erases a bit. */
         void erase_bit(db_bit *);
         
-        /* resets the pointers and variables of the class*/
+        /* Resets pointers and variables of the class. */
         void reset_data();
         
-        /* Erases the current loaded bits and frees memory*/
+        /* Erases current loaded bits and frees memory. */
         void erase();
         
-        /* the database is empty */
+        /* The database is empty. */
         bool empty();
         
-        /*! prints the bits in the current context (default: main from *first)
-         *  @param tabs used by the system.
-         *  @param  bit the bit to start printing from.
+        /*! Prints the bits of the current context (default context: main from *first).
+         *  @param tabs Used by the system.
+         *  @param  bit The bit to start printing from.
          */
         void print(size_t tabs = 0 , lan::db_bit * bit = nullptr);
         
-        /* file */
+        /* File */
         
-        /* connects the database to a file, to pull and push from */
+        /* Connects the database to a file, to pull and push from. */
         bool connect(std::string);
         
-        /* database is connected to a file */
+        /* Database is connected to a file. */
         bool is_connected();
         
-        /* disconnects the database from the current file */
+        /* Disconnects the database from the current file. */
         bool disconnect();
         
-        /*! @brief pull dependece */
+        /*! @brief Pull dependece. */
         size_t  str_get_str_end(std::string, size_t = 0);
         
-        /*! @brief pull dependece */
+        /*! @brief Pull dependece. */
         ssize_t str_find_first_of(std::string const , std::string const, size_t = 0);
         
-        /*! @brief pull dependece */
+        /*! @brief Pull dependece. */
         ssize_t str_find_first_not_of(std::string const, std::string const, size_t = 0);
         
-        /*! @brief pull dependece */
+        /*! @brief Pull dependece. */
         bool str_compare(const char , const std::string );
         
-        /*! @brief pull dependece */
+        /*! @brief Pull dependece. */
         std::string pop_next(std::string &);
         
-        /*! @brief pull dependece */
+        /*! @brief Pull dependece. */
         lan::db_bit * get_container_data(std::string &);
         
-        /*! @brief pull dependece */
+        /*! @brief Pull dependece. */
         lan::db_bit  * read_container_bit(std::string &, bool = false);
         
-        /*! @brief pull dependece */
+        /*! @brief Pull dependece. */
         lan::db_bit * get_array_data(std::string &);
         
-        /*! @brief pull dependece */
+        /*! @brief Pull dependece. */
         lan::db_bit  * read_array_bit(std::string const, std::string &);
         
-        /*! @brief pull dependece */
+        /*! @brief Pull dependece. */
         lan::db_bit_type convert_to_bit_type(char);
         
-        /*! @brief pull dependece */
+        /*! @brief Pull dependece. */
         std::string prepare_string_to_read(std::string);
         
-        /*! @brief pull dependece */
+        /*! @brief Pull dependece. */
         void * get_var_data(db_bit_type, std::string);
         
-        /*! @brief pull dependece */
+        /*! @brief Pull dependece. */
         lan::db_bit  * read_var_bit(std::string const, db_bit_type const, std::string &);
         
-        /*! @brief pull dependece */
+        /*! @brief Pull dependece. */
         lan::db_bit  * read_value_bit(std::string &, bool = false);
         
-        /*! @brief pull dependece */
+        /*! @brief Pull dependece. */
         lan::db_bit  * read_bit(std::string &);
         
-        /*! @brief pull dependece */
+        /*! @brief Pull dependece. */
         lan::db_bits * read_all_bits(std::string);
         
-        /*! @brief pulls data from the connected file. Note: This operaion will erase all bits */
+        /*! @brief Pulls data from the connected file. Note: This operaion erases all bits */
         bool pull();
         
-        /*! @brief push dependece */
+        /*! @brief Push dependece.*/
         std::string write_container_bit(db_bit *);
         
-        /*! @brief push dependece */
+        /*! @brief Push dependece.*/
         std::string write_array_bit(db_bit *);
         
-        /*! @brief push dependece */
+        /*! @brief Push dependece.*/
         std::string prepare_char_to_write(char);
         
-        /*! @brief push dependece */
+        /*! @brief Push dependece.*/
         std::string prepare_string_to_write(std::string);
         
-        /*! @brief push dependece */
+        /*! @brief Push dependece.*/
         std::string write_var_bit(db_bit *, bool = false);
         
-        /*! @brief push dependece */
+        /*! @brief Push dependece.*/
         std::string write_bit(db_bit *, bool = false);
         
-        /*! @brief push dependece */
+        /*! @brief Push dependece.*/
         std::string write_all_bits(db_bits *);
         
-        /*! @brief pushes data to the current file, writing all data in human-readable form.*/
+        /*! @brief Pushes data to the current file, in landb-structure.*/
         bool push();
         
-        /* error handling */
+        /* Error handling */
         
-        /*! @brief general dependece */
+        /*! @brief General dependece */
         std::string error_string(errors::_private::error_type, std::string const);
         
         /* db general */
         
-        /*! @brief updates the *last pointer */
+        /*! @brief Updates the *last pointer */
         bool update_last(){return (last = (first and last) ? last : get_last_bit(first));}
         
-        /*! @brief sets a variable bit.
-         @param context the context of the variable.
-         @param var     the bit that will be set.
-         @param name    the name of the bit.
-         @param type    the lan::type of the bit.
-         @param value   the literal value of the bit.
+        /*! @brief Sets a variable bit, depence.
+         @param context The context of the variable.
+         @param var     The bit that will be set.
+         @param name    The name of the bit.
+         @param type    The type of the bit.
+         @param value   The literal value of the bit.
          */
         template<typename any>
         bool set_bit(db_bit * context, db_bit * var,std::string const name, db_bit_type const type, any const value){
@@ -243,11 +244,11 @@ namespace lan
             return (var->data);
         }
         
-        /*! @brief sets a bit.
-         @param context the context of the variable.
-         @param var     the bit that will be set.
-         @param name    the name of the bit.
-         @param type    the lan::type of the bit.
+        /*! @brief Sets a bit, dependece.
+         @param context The context of the variable.
+         @param var     The bit that will be set.
+         @param name    The name of the bit.
+         @param type    The type of the bit.
          */
         bool set_bit(db_bit * context, db_bit * var,std::string const name, db_bit_type const type){
             var->~db_bit();
@@ -257,10 +258,10 @@ namespace lan
             return  (var);
         }
         
-        /*! @brief inits the *first bit, used by the system when the first bit is declared.
-         @param name    the name of the bit.
-         @param value   the literal value of the bit.
-         @param type    the lan::type of the bit.
+        /*! @brief Inits the *first bit, dependece.
+         @param name    The name of the bit.
+         @param value   The literal value of the bit.
+         @param type    The type of the bit.
          */
         template<typename any>
         bool init(std::string const name, any const value, db_bit_type const type){
@@ -268,11 +269,11 @@ namespace lan
             return (first = last = data) and ((type < lan::Array) ? set_bit(nullptr, data, name, type, value) : set_bit(nullptr ,data, name, type));
         }
         
-        /*! @brief inits the *first bit of a context, used by the system when the first bit of a certain context is declared.
-         @param context the context.
-         @param name    the name of the bit.
-         @param value   the literal value of the bit.
-         @param type    the lan::type of the bit.
+        /*! @brief Inits the *first bit of a context, dependece.
+         @param context The context.
+         @param name    The name of the bit.
+         @param value   The literal value of the bit.
+         @param type    The type of the bit.
          */
         template<typename any>
         bool init(lan::db_bit * context, std::string const name, any const value, db_bit_type const type){
@@ -281,10 +282,10 @@ namespace lan
             return ((type < lan::Array) ? set_bit(data, data->lin, name, type, value) : set_bit(data, data->lin, name, type));
         }
         
-        /*! @brief appends a bit in the main context, used by the system to append a bit in the main context.
-         @param name    the name of the bit.
-         @param value   the literal value of the bit.
-         @param type    the lan::type of the bit.
+        /*! @brief Appends a bit in the main context, dependece.
+         @param name    The name of the bit.
+         @param value   The literal value of the bit.
+         @param type    The type of the bit.
          */
         template<typename any>
         bool append(std::string const name, any const value, db_bit_type const type){
@@ -293,11 +294,11 @@ namespace lan
             return (last=last->nex) and ((type < lan::Array) ? set_bit(nullptr, last, name, type, value) : set_bit(nullptr, last, name, type));
         }
         
-        /*! @brief appends a bit in a context, used by the system to append bit in a certain context.
-         @param context the context.
-         @param name    the name of the bit.
-         @param value   the literal value of the bit.
-         @param type    the lan::type of the bit.
+        /*! @brief Appends a bit in a context, dependece.
+         @param context The context.
+         @param name    The name of the bit.
+         @param value   The literal value of the bit.
+         @param type    The type of the bit.
          */
         template<typename any>
         bool append(lan::db_bit * context, std::string const name, any const value, db_bit_type const type){
@@ -309,11 +310,11 @@ namespace lan
             } return false;
         }
         
-        /*! @brief inits a bit in a context, used by the system to init a bit in a certain context.
-         @param context the context.
-         @param name    the name of the bit.
-         @param value   the literal value of the bit.
-         @param type    the lan::type of the bit.
+        /*! @brief Inits a bit in a context, dependece.
+         @param context The context.
+         @param name    The name of the bit.
+         @param value   The literal value of the bit.
+         @param type    The type of the bit.
          */
         template<typename any>
         bool init_iter(lan::db_bit * context, std::string const name, any const value, db_bit_type const type){
@@ -322,11 +323,11 @@ namespace lan
             return ((type < lan::Array) ? set_bit(context, data, name, type, value) : set_bit(context, data, name, type));
         }
         
-        /*! @brief appends a bit in a context, used by the system to append a bit in a certain context.
-         @param context the context.
-         @param name    the name of the bit.
-         @param value   the literal value of the bit.
-         @param type    the lan::type of the bit.
+        /*! @brief Appends a bit in a context, dependece.
+         @param context The context.
+         @param name    The name of the bit.
+         @param value   The literal value of the bit.
+         @param type    The ype of the bit.
          */
         template<typename any>
         bool append_iter(lan::db_bit * context, std::string const name, any const value, db_bit_type const type){
@@ -338,10 +339,10 @@ namespace lan
             } return false;
         }
         
-        /*! @brief appends a bit in an array.
-         @param target  the array.
-         @param value   the literal value of the bit.
-         @param type    the lan::type of the bit.
+        /*! @brief Appends a bit in an array.
+         @param target  The array.
+         @param value   The literal value of the bit.
+         @param type    The type of the bit.
          */
         template<typename any>
         bool iterate(std::string const target, any const value, db_bit_type const type){
@@ -351,44 +352,44 @@ namespace lan
             } throw lan::errors::bit_name_error(error_string(errors::_private::_bit_name_error, target+"{a}"));
         }
         
-        /*! @brief declares an array or container bit in the main context.
-         @param name    the name of the bit.
-         @param type    the lan::type of the bit.
+        /*! @brief Declares an array or container bit in the main context.
+         @param name    The name of the bit.
+         @param type    The type of the bit.
          */
         bool declare(std::string const name, db_bit_type const type);
         
-        /*! @brief declares an array or container bit in a certain context.
-         @param name    the name of the bit.
-         @param type    the lan::type of the bit.
+        /*! @brief Declares an array or container bit in a certain context.
+         @param name    The name of the bit.
+         @param type    The type of the bit.
          */
         bool declare(std::string const target, std::string const name, db_bit_type const type);
         
-        /*! @brief global dependece */
+        /*! @brief Global dependece. */
         std::string find__pop_address(std::string &);
         
-        /*! @brief global dependece */
+        /*! @brief Global dependece. */
         lan::db_bit * find(std::string const, lan::db_bit *);
         
-        /*! @brief global dependece */
+        /*! @brief Global dependece. */
         lan::db_bit * find_rec(std::string, lan::db_bit_type const , lan::db_bit *);
         
-        /*! @brief global dependece */
+        /*! @brief Global dependece. */
         lan::db_bit * find_rec(std::string, lan::db_bit_type const , lan::db_bit_type const, lan::db_bit *);
         
-        /*! @brief global dependece */
+        /*! @brief Global dependece. */
         lan::db_bit * find_var(std::string const, lan::db_bit *);
         
-        /*! @brief global dependece */
+        /*! @brief Global dependece. */
         lan::db_bit * find_non_var(std::string const, lan::db_bit *);
         
-        /*! @brief global dependece */
+        /*! @brief Global dependece. */
         lan::db_bit * find_any(std::string const, lan::db_bit_type const, lan::db_bit *);
         
-        /* get */
+        /* Get */
         
-        /*! @brief gets data a variable bit in the main context.
-         @param name    the name of the bit.
-         @param type    the type of the bit.
+        /*! @brief Gets data from a variable bit in the main context.
+         @param name    The name of the bit.
+         @param type    The type of the bit.
          Eg: any.get<int>(...);
          */
         template<typename any>
@@ -399,10 +400,22 @@ namespace lan
             } throw lan::errors::bit_name_error(error_string(errors::_private::_bit_name_error, name));
         }
         
-        /*! @brief gets data from a variable bit from an array in the main context.
-         @param name    the name of the bit.
-         @param index   the index of the bit.
-         @param type    the type of the bit.
+        /*! @brief Gets *data from a variable bit in the main context.
+         @param name    The name of the bit.
+         @param type    The type of the bit.
+         Eg: int * p = any.get_p<int>(...);
+         */
+        template<typename any>
+        any * get_p(std::string const name, const lan::db_bit_type type){
+            if((data = find_any(name, type, first)) and data->data and type < lan::Array){
+                return (any*)data->data;
+            } throw lan::errors::bit_name_error(error_string(errors::_private::_bit_name_error, name));
+        }
+        
+        /*! @brief Gets data from a variable bit from an array in the main context.
+         @param name    The name of the bit.
+         @param index   The index of the bit.
+         @param type    The type of the bit.
          Eg: any.get<int>(...);
          */
         template<typename any>
@@ -417,10 +430,27 @@ namespace lan
             } throw lan::errors::bit_name_error(error_string(errors::_private::_bit_name_error, name));
         }
         
-        /*! @brief gets a variable bit in a certain context.
-         @param context the context.
-         @param name    the name of the bit.
-         @param type    the type of the bit.
+        /*! @brief gets *data from an array in the main context.
+         @param name    The name of the bit.
+         @param index   The index of the bit.
+         @param type    The type of the bit.
+         Eg: int * p = any.get_p<int>(...);
+         */
+        template<typename any>
+        any * get_p(std::string const name, size_t index, const lan::db_bit_type type){
+            if((data = find_any(name, lan::Array, first))){
+                data=data->lin;
+                for(register_t it = 0 ; (it < index) and data ; it++, data=data->nex);
+                if(data and data->type == type){
+                    return (any*)data->data;
+                } throw lan::errors::bit_name_error(error_string(errors::_private::_bit_name_error, name+"["+std::to_string(index)+"]"));
+            } throw lan::errors::bit_name_error(error_string(errors::_private::_bit_name_error, name));
+        }
+        
+        /*! @brief Gets data from a variable bit in a certain context.
+         @param context The context.
+         @param name    The name of the bit.
+         @param type    The type of the bit.
          Eg: any.get<int>(...);
          */
         template<typename any>
@@ -433,8 +463,24 @@ namespace lan
             } throw lan::errors::bit_name_error(error_string(errors::_private::_bit_name_error, name));
         }
         
-        /*! @brief gets a variable bit in a certain context.
-         @param bit   the bit.
+        /*! @brief Gets *data from a variable bit in a certain context.
+         @param context The context.
+         @param name    The name of the bit.
+         @param type    The type of the bit.
+         Eg: int * p = any.get_p<int>(...);
+         */
+        template<typename any>
+        any * get_p(std::string context, std::string const name, const lan::db_bit_type type){
+            if ((data = find_rec(context, lan::Container, first))) {
+                if((data = find_any(name, type, data->lin)) and data->data){
+                    return (any*)data->data;
+                }
+            } throw lan::errors::bit_name_error(error_string(errors::_private::_bit_name_error, name));
+        }
+        
+        
+        /*! @brief Gets data from a variable bit.
+         @param bit   The bit.
          Eg: any.get<int>(...);
          */
         template<typename any>
@@ -445,26 +491,37 @@ namespace lan
             } return 0;
         }
         
-        /*! @brief get dependece */
+        /*! @brief Gets *data from a variable bit.
+         @param bit   The bit.
+         Eg: int * p = any.get_p<int>(...);
+         */
+        template<typename any>
+        any get_p(db_bit * bit){
+            if(bit){
+                return (any*)bit->data;
+            } return 0;
+        }
+        
+        /*! @brief Get dependece. */
         lan::db_bit * get_array_bit(lan::db_bits *, size_t);
         
-        /*! @brief get dependece */
+        /*! @brief Get dependece. */
         lan::db_bit * get_last_bit(lan::db_bits *);
         
-        /*! @brief get dependece */
+        /*! @brief Get dependece. */
         lan::db_bit_type get_var_type(std::string const);
         
-        /*! @brief returns the *data of a specific bit in the main context
-         * i recomend to use anchor aka @ to get data of another context*/
+        /*! @brief Returns the *data of a specific bit in the main context.
+         * #Deprecated */
         void * operator [](std::string);
         
-        /* set */
+        /* Set */
         
-        /*! @brief sets a variable bit in the main context.
-         @param name    the name of the bit.
-         @param value   the value of the bit.
-         @param type    the type of the bit.
-         @param overwrite   flag to override an existing bit with the same name and type.
+        /*! @brief Sets a variable bit in the main context.
+         @param name    The name of the bit.
+         @param value   The value of the bit.
+         @param type    The type of the bit.
+         @param overwrite   Flag to override an existing bit with the same name and type.
          Eg: any.get<int>(...);
          */
         template<typename any>
@@ -476,10 +533,10 @@ namespace lan
             } return (not first) ? init(name, value, type) : append(name, value, type);
         }
         
-        /*! @brief sets a variable bit in an array.
-         @param value   the value of the bit.
-         @param index   the index of the bit.
-         @param type    the type of the bit.
+        /*! @brief Sets a variable bit in an array.
+         @param value   The value of the bit.
+         @param index   The index of the bit.
+         @param type    The type of the bit.
          Eg: any.get<int>(...);
          */
         template<typename any>
@@ -493,16 +550,16 @@ namespace lan
                     data->type = type;
                     if(type < lan::Array)
                         data->data = new any (value);
-                }
+                } 
             } throw lan::errors::bit_name_error(error_string(errors::_private::_bit_name_error, array+"{Array}"));
         }
         
-        /*! @brief sets a variable bit in a context.
-         @param context the context.
-         @param name    the name of the bit.
-         @param value   the value of the bit.
-         @param type    the type of the bit.
-         @param overwrite   flag to override an existing bit with the same name and type.
+        /*! @brief Sets a variable bit in a context.
+         @param context The context.
+         @param name    The name of the bit.
+         @param value   The value of the bit.
+         @param type    The type of the bit.
+         @param overwrite   Flag to override an existing bit with the same name and type.
          Eg: any.get<int>(...);
          */
         template<typename any>
@@ -518,8 +575,9 @@ namespace lan
         }
         
         /*! @brief Sets the anchor, aka "@", to a specific bit. Depending in how it's used, an anchor may potentialy speed up the program.
-         @param array   the array.
-         @param index   the index that we will be pointing to.
+         @param array   The array.
+         @param index   The index that we will be pointing to.
+         Note: Anchors can't be variables, only Containers and Arrays are supported.
          */
         lan::anchor_t * set_anchor(std::string const array, size_t index){
             if ((data = find_rec(array, lan::Container, lan::Array, first)) and
@@ -528,7 +586,8 @@ namespace lan
         }
         
         /*! @brief Sets the anchor, aka "@", to a specific bit. Depending in how it's used, an anchor may potentialy speed up the program.
-         @param context the context.
+         @param context The context.
+         Note: Anchors can't be variables, only Containers and Arrays are supported.
          */
         lan::anchor_t * set_anchor(std::string const context){
             if ((data = find_rec(context, lan::Container, first))) return (anchor = data);
@@ -537,30 +596,31 @@ namespace lan
         
         /*! @brief Sets the anchor, aka "@", to a specific bit. Depending in how it's used, an anchor may potentialy speed up the program.
          @param anchor an bit pointer to use as anchor.
+         Note: Anchors can't be variables, only Containers and Arrays are supported.
          */
         lan::anchor_t * set_anchor(lan::anchor_t * anchor){
             if ((this->anchor = anchor)) return anchor;
             else throw lan::errors::anchor_name_error(error_string(errors::_private::_anchor_name_error, "nullptr"));
         }
         
-        /* remove */
+        /* Remove */
         
-        /*! @brief removes a bit.
-         @param name the name of the bit.
-         @param type the type of the bit.
+        /*! @brief Removes a bit.
+         @param name The name of the bit.
+         @param type The type of the bit.
          */
         bool remove(std::string const name, db_bit_type const type);
         
-        /*! @brief removes a bit.
-         @param context the context.
-         @param name the name of the bit.
-         @param type the type of the bit.
+        /*! @brief Removes a bit.
+         @param context The context.
+         @param name The name of the bit.
+         @param type The type of the bit.
          */
         bool remove(std::string const context, std::string const name, db_bit_type const type);
         
-        /*! @brief removes a bit.
-         @param array the array.
-         @param index the index of the bit in array.
+        /*! @brief Removes a bit.
+         @param array The array.
+         @param index The index of the bit in array.
          */
         bool remove(std::string const array, size_t index);
         

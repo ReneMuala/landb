@@ -2,10 +2,10 @@
 C++ library to save & load variables easily.
  
 ## Why Landb? 🪧
-- It saves time: <i>with landb you don't have to worry about writing and loading your program metadata, just `database.connect("filename.ldb")` then `database.pull()` to read and `database.push()` to write your variables.</I>
+- It saves time: <i>with landb you don't have to worry about writing and loading your program data, just `database.connect("filename.ldb")` then `database.pull()` to read and `database.push()` to write your variables into `filename.ldb`.</I>
 - It's fast: <i>it's really fast</i>😄
 - multi-type arrays: <i>Landb Arrays may contain multiple types of data, even another arrays.</i>
-- type-oriented variables: <i> In Landb `number=i:1` and `number=s:"one"` can exist in the same database without conflicts, because they have different types</i> 
+- type-oriented variables: <i> In Landb `number=i:1` and `number=s:"one"` can exist in the same database without conflicts.</I> 
 - object-oriented variables: <i> Containers allows us to implement object oriented variables such as:</i>
 ```
 (PersonA:
@@ -19,10 +19,9 @@ C++ library to save & load variables easily.
 )
 ```
 
-
-
-## What's new in version 2.5? 🎁
-> <strong> 533: set_anchor(std::string const context) </strong> <i>fixed🔧</I>
+## What's new in version 2.6? 🎁
+- improved header-documentation.
+- speed up your program by using the new <b>`get_p(...)`</b> methods.
 
 ## Examples ⚙️
 
@@ -87,7 +86,7 @@ git clone https://github.com/ReneMuala/landb.git
 
 
 ```
-# 2.1 getin landb foder :
+# 2.1 get in landb foder :
 cd landb 
 ```
 
@@ -121,3 +120,6 @@ target_link_libraries(sgep ${CMAKE_SOURCE_DIR}/liblandb.a) # linking with liblan
 install(TARGETS sgep RUNTIME DESTINATION bin)
 
 ```
+
+## Are you looking for some documentation? 😅
+Working on it...

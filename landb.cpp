@@ -11,7 +11,7 @@
 
 #include "landb.hpp"
 
-namespace lan
+namespace lan 
 {
     
     /* lan::safe_file */
@@ -46,7 +46,7 @@ namespace lan
         if((file = fopen(filename.data(), "r"))){
             char data_c = 0;
             while(!feof(file)){
-                if(data_c != 0) data+=data_c; fread(&data_c, sizeof(char), 1, file);
+                if(data_c != 0) data+=data_c; fread(&data_c, sizeof(char), 1, file); 
             }
         } return data;
     }
@@ -269,7 +269,7 @@ namespace lan
                     return (db_bit_type)i;
                 return Unsafe;
         }
-        
+
         void * db::get_var_data(db_bit_type type, std::string data){
             switch(type){
                 case Bool: return new bool(atoi(data.data())); break;
@@ -292,7 +292,7 @@ namespace lan
                 if(ch == '\\' and !in_escape) in_escape = true;
                 else in_escape = false;
                 if(!in_escape)dst += ch;
-            }
+            } 
             return dst;
         }
         
@@ -316,7 +316,7 @@ namespace lan
                 switch(type){
                     case Array: bit = read_array_bit(name, content); break;
                     default: bit = read_var_bit(name, type, content); break;
-                }
+                } 
             } return bit;
         }
         
@@ -349,7 +349,7 @@ namespace lan
             if(first)
                 erase_bits(first);
             first = nullptr;
-            std::string data_str = file.pull();
+            std::string data_str = file.pull(); 
             return (first = read_all_bits(data_str));
         }
         
@@ -555,8 +555,8 @@ namespace lan
                 throw lan::errors::bit_name_error(error_string(errors::_private::_bit_name_error, name));
         }
         
-        void * db::operator[](std::string const name){
-            return find(name, first)->data;
+        void * db::operator[](std::string const context){
+            return find_rec(context, lan::Container, first)->data;
         }
         
         /* set */
@@ -591,4 +591,4 @@ namespace lan
             if(last)
                 erase();
         }
-}
+} 
