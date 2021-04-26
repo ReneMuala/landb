@@ -19,9 +19,9 @@ C++ library to save & load variables easily.
 )
 ```
 
-## What's new in version 2.6? 🎁
-- improved header-documentation.
-- speed up your program by using the new <b>`get_p(...)`</b> methods.
+## What's new in version 2.7? 🎁
+- `lan::anchor_t * set_anchor(lan::anchor_t * anchor)`, <b>improved 🔩</b>
+- `bool set(std::string array, size_t index,  any const value, lan::db_bit_type type)`, <b>fixed🔧</b>
 
 ## Examples ⚙️
 

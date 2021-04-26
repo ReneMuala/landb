@@ -47,7 +47,7 @@ namespace lan
     
     /* lan::db */
     
-    const std::string db_version = "2.6 (public)";
+    const std::string db_version = "2.7 (public)";
     
     namespace errors {
         //! @brief catch parameter to handle errors with bit names
@@ -550,7 +550,8 @@ namespace lan
                     data->type = type;
                     if(type < lan::Array)
                         data->data = new any (value);
-                } 
+                    return true;
+                } throw lan::errors::bit_name_error(error_string(errors::_private::_bit_name_error, array+"["+std::to_string(index)+"]"));
             } throw lan::errors::bit_name_error(error_string(errors::_private::_bit_name_error, array+"{Array}"));
         }
         
@@ -590,7 +591,7 @@ namespace lan
          Note: Anchors can't be variables, only Containers and Arrays are supported.
          */
         lan::anchor_t * set_anchor(std::string const context){
-            if ((data = find_rec(context, lan::Container, first))) return (anchor = data);
+            if ((data = find_rec(context, lan::Container, first)) || (data = find_rec(context, lan::Array, first))) return (anchor = data);
             else throw lan::errors::anchor_name_error(error_string(errors::_private::_anchor_name_error, context));
         }
         
@@ -599,8 +600,11 @@ namespace lan
          Note: Anchors can't be variables, only Containers and Arrays are supported.
          */
         lan::anchor_t * set_anchor(lan::anchor_t * anchor){
-            if ((this->anchor = anchor)) return anchor;
-            else throw lan::errors::anchor_name_error(error_string(errors::_private::_anchor_name_error, "nullptr"));
+            if ((this->anchor = anchor) && (anchor->type == lan::Array || anchor->type == lan::Container))
+                return anchor;
+            else if (!anchor) throw lan::errors::anchor_name_error(error_string(errors::_private::_anchor_name_error, "nullptr"));
+            else throw lan::errors::anchor_name_error(error_string(errors::_private::_anchor_name_error, anchor->key + "{variable}"));
+            return nullptr;
         }
         
         /* Remove */
