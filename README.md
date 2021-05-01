@@ -20,6 +20,7 @@ C++ library to save & load variables easily.
 ```
 
 ## What's new in version 2.7? 🎁
+- Documentation is available [Here](https://github.com/ReneMuala/landb/wiki).
 - `lan::anchor_t * set_anchor(lan::anchor_t * anchor)`, <b>improved 🔩</b>
 - `bool set(std::string array, size_t index,  any const value, lan::db_bit_type type)`, <b>fixed🔧</b>
 
@@ -35,9 +36,9 @@ int main(int argc, const char * argv[]) {
     
     lan::db database;
     
-    database.set<std::string>("message", "hello world", lan::String);
+    database.set< std::string >("message", "hello world", lan::String);
     
-    std::cout << database.get<std::string>("message", lan::String) << std::endl;
+    std::cout << database.get< std::string >("message", lan::String) << std::endl;
     
     return 0;
 }
@@ -65,12 +66,14 @@ A string containing "hello world".
 
 ```
 message = s : "Hello world"
+
 ```
 
 An array with numbers and strings:
 
 ```
 numbers = a : [  i : 1  s : "one"  i : 2  s : "two" ]
+
 ```
 
 ## Compiling 🔨
@@ -80,6 +83,7 @@ numbers = a : [  i : 1  s : "one"  i : 2  s : "two" ]
 ```
 # 1.1 clone using git:
 git clone https://github.com/ReneMuala/landb.git
+
 ```
 
 <b> 2. Build with cmake </b> <i> (inside of the project dir)</i>
@@ -93,11 +97,13 @@ cd landb
 ```
 # 2.2 configure cmake :
 cmake ./ 
+
 ```
 
 ```
 # 2.3 build with cmake :
 cmake --build ./
+
 ```
 
 ## Linking with your project⛓
@@ -122,4 +128,5 @@ install(TARGETS sgep RUNTIME DESTINATION bin)
 ```
 
 ## Are you looking for some documentation? 😅
-Working on it...
+Read it [Here](https://github.com/ReneMuala/landb/wiki).
+
