@@ -1,37 +1,132 @@
-## Welcome to GitHub Pages
+# Landb 🗃
+C++ library to save & load variables easily.
+ 
+## Why Landb? 🪧
+- It saves time: <i>with landb you don't have to worry about writing and loading your program data, just `database.connect("filename.ldb")` then `database.pull()` to read and `database.push()` to write your variables into `filename.ldb`.</I>
+- It's fast: <i>it's really fast</i>😄
+- multi-type arrays: <i>Landb Arrays may contain multiple types of data, even another arrays.</i>
+- type-oriented variables: <i> In Landb `number=i:1` and `number=s:"one"` can exist in the same database without conflicts.</I> 
+- object-oriented variables: <i> Containers allows us to implement object oriented variables such as:</i>
+```
+(PersonA:
+    Name=s:"Ty"
+    Age=i:9
+)
 
-You can use the [editor on GitHub](https://github.com/ReneMuala/landb/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
-
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
-
-### Markdown
-
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
+(PersonB: 
+    Name=s:"Renato"
+    Age=i:17
+)
 ```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+## What's new in version 2.7? 🎁
+- Documentation is available [Here](https://github.com/ReneMuala/landb/wiki).
+- `lan::anchor_t * set_anchor(lan::anchor_t * anchor)`, <b>improved 🔩</b>
+- `bool set(std::string array, size_t index,  any const value, lan::db_bit_type type)`, <b>fixed🔧</b>
 
-### Jekyll Themes
+## Examples ⚙️
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/ReneMuala/landb/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+#### Hello world 🤓
 
-### Support or Contact
+```
+#include <iostream>
+#include "landb.hpp"
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+int main(int argc, const char * argv[]) {
+    
+    lan::db database;
+    
+    database.set< std::string >("message", "hello world", lan::String);
+    
+    std::cout << database.get< std::string >("message", lan::String) << std::endl;
+    
+    return 0;
+}
+```
+
+## Types 📑
+
+| Type | Description |
+|:--|:--|
+|  Bool | Boolean |
+| Int | Integer |
+| Long |  Big integer |
+| LongLong | Big integer (unsigned) |
+|  Float  | Real number  |
+| Double | Big real number  |
+| Char | Character |
+| String | Character sequence |
+| Unsafe | Unsafe data, only exists at runtime and cannot be pushed |
+| Array | Variable sequence |
+| Container | (Similar to <b>namespace in c++</b>) Allows object oriented variables |
+
+## Landb structure examples 📋
+ 
+A string containing "hello world".
+
+```
+message = s : "Hello world"
+
+```
+
+An array with numbers and strings:
+
+```
+numbers = a : [  i : 1  s : "one"  i : 2  s : "two" ]
+
+```
+
+## Compiling 🔨
+
+<b>1. Clone this repo </b>
+
+```
+# 1.1 clone using git:
+git clone https://github.com/ReneMuala/landb.git
+
+```
+
+<b> 2. Build with cmake </b> <i> (inside of the project dir)</i>
+
+
+```
+# 2.1 get in landb foder :
+cd landb 
+```
+
+```
+# 2.2 configure cmake :
+cmake ./ 
+
+```
+
+```
+# 2.3 build with cmake :
+cmake --build ./
+
+```
+
+## Linking with your project⛓
+
+| File | Description | Notes |
+|:--|:--|:--|
+| liblandb.a | Static library | Can be used to link binaries statically with landb |
+| liblandbD.so | Shared library |  Can be used to link binaries dynamically with landb |
+
+Note: to include landb as `#include "landb.hpp"` you need to copy <i>landb.hpp</I> to your source's dir.
+
+<b> CMakeLists.txt example: </b>
+
+```
+cmake_minimum_required(VERSION 3.0)
+project(sgep)
+add_compile_options(-std=c++17)
+add_executable(sgep main.cpp)
+target_link_libraries(sgep ${CMAKE_SOURCE_DIR}/liblandb.a) # linking with liblandb.a in project source dir
+install(TARGETS sgep RUNTIME DESTINATION bin)
+
+```
+
+## Are you looking for some documentation? 😅
+Read it [Here](https://github.com/ReneMuala/landb/wiki).
+
